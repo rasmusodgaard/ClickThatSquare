@@ -47,9 +47,10 @@ function create() {
         var tween = this.tweens.add({
           targets: square,
           x: centerX + 200,
-          ease: "Cubic.easeIn",
+          ease: "Cubic.easeInOut",
           duration: 1500,
           yoyo: true,
+          angle: 765,
 
           //Callbacks
           onStart: () => {
@@ -57,11 +58,11 @@ function create() {
             updateStatusText();
           },
           onComplete: () => {
-            updateStatusText();
             square.data.set("isRunning", false);
+            updateStatusText();
           },
-          onUpdate: (tween) => {
-            this.text.setText(tween.progress);
+          onUpdate: () => {
+            this.text.setText("rot: " + square.angle);
           },
         });
       }
