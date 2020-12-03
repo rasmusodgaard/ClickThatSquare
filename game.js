@@ -35,7 +35,7 @@ function create() {
   this.statusText = this.add.text(0, 50, "0", { font: "40px Impact" });
 
   //Square gameobject
-  square = this.add.image(centerX, centerY, "square");
+  square = this.add.image(centerX - 200, centerY, "square");
   square.setInteractive();
   square.setDataEnabled();
   square.data.set("isRunning", false);
@@ -47,15 +47,17 @@ function create() {
         var tween = this.tweens.add({
           targets: square,
           x: centerX + 200,
-          ease: "Cubic.easeInOut",
+          ease: "Bounce.easeOut",
           duration: 1500,
           yoyo: true,
-          angle: 765,
+          angle: 90,
 
           //Callbacks
           onStart: () => {
             square.data.set("isRunning", true);
             updateStatusText();
+
+            particles.emitParticleAt(square.x, square.y);
           },
           onComplete: () => {
             square.data.set("isRunning", false);
@@ -69,6 +71,26 @@ function create() {
     },
     this
   );
+
+  let particles = this.add.particles("square");
+
+  particles.createEmitter({
+    angle: { min: 0, max: 360 },
+    speed: { min: 300, max: 500 },
+    rotate: { min: 90, max: 180 },
+    quantity: 20,
+    scale: 0.3,
+    lifespan: 500,
+    alpha: { start: 1, end: 0, ease: "Cubic.easeOut" },
+    on: false,
+  });
+
+  particles.createEmitter({
+    scale: { start: 1, end: 1.5, ease: "Cubic.easeIn" },
+    alpha: { start: 0.7, end: 0, ease: "Cubic.easeIn" },
+    lifespan: 500,
+    on: false,
+  });
 }
 
 function updateStatusText() {
